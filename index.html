@@ -29,6 +29,12 @@
   .newwin{border:1px solid var(--line);background:#f9fafb;border-radius:10px;padding:7px 12px;
     font-size:13px;cursor:pointer;color:var(--sub);text-decoration:none;white-space:nowrap;transition:all .15s}
   .newwin:hover{background:#f1f2f8;color:var(--ink)}
+
+  /* ── 工作区：两个 iframe 常驻，切换只改可见性（保留各自状态） ── */
+  .stage{flex:1;position:relative;min-height:0}
+  .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:none;background:#fff}
+  .stage iframe.show{display:block}
+
   @media (max-width:640px){
     .logo span.t{display:none}
     .tab{padding:7px 10px;font-size:13px}
