@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>班级工具箱 · 公网工作台</title>
+<style>
+  :root{
+    --bg:#eef0f7; --bar:#ffffff; --ink:#1e2235; --sub:#6b7280; --line:#e5e7eb;
+    --a:#4f46e5; --b:#0d9488;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:"Segoe UI","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);
+    display:flex;flex-direction:column;overflow:hidden}
+
+  .bar{flex:0 0 auto;display:flex;align-items:center;gap:10px;background:var(--bar);
+    border-bottom:1px solid var(--line);padding:8px 12px;box-shadow:0 2px 10px rgba(20,24,60,.05);z-index:5}
+  .logo{font-weight:700;font-size:16px;margin-right:6px;white-space:nowrap}
+  .tab{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:#f9fafb;color:var(--ink);
+    border-radius:10px;padding:7px 14px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+  .tab:hover{background:#f1f2f8}
+  .tab .dot{width:8px;height:8px;border-radius:50%}
+  .tab.t-a .dot{background:var(--a)} .tab.t-b .dot{background:var(--b)}
+  .tab.active{color:#fff}
+  .tab.t-a.active{background:linear-gradient(135deg,#6366f1,#4f46e5);border-color:transparent}
+  .tab.t-b.active{background:linear-gradient(135deg,#14b8a6,#0d9488);border-color:transparent}
+  .spacer{flex:1}
+  .newwin{border:1px solid var(--line);background:#f9fafb;border-radius:10px;padding:7px 12px;
+    font-size:13px;cursor:pointer;color:var(--sub);text-decoration:none;white-space:nowrap;transition:all .15s}
+  .newwin:hover{background:#f1f2f8;color:var(--ink)}
+  @media (max-width:640px){
+    .logo span.t{display:none}
+    .tab{padding:7px 10px;font-size:13px}
+    .newwin{display:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="logo">🧰 <span class="t">班级工具箱</span></div>
+  <button class="tab t-a active" data-view="a"><span class="dot"></span>📋 考勤 · 线上版</button>
+  <button class="tab t-b" data-view="b"><span class="dot"></span>📝 请假台 · 线上版</button>
+  <div class="spacer"></div>
+  <a class="newwin" id="popout" href="#" target="_blank" rel="noopener">在新窗口打开当前网站 ↗</a>
+</div>
+
+<div class="stage">
+  <!-- 线上站点：数据在 Supabase 云端，任何设备打开都是同一份数据 -->
+  <iframe id="frame-a" class="show" src="https://pick12038.github.io/suqin/" title="速勤 考勤工作台（线上）"></iframe>
+  <iframe id="frame-b" src="https://pick12038.github.io/chaoneng-leave/" title="超能班 请假台（线上）"></iframe>
+</div>
+
+<script>
+(function(){
+  var tabs = document.querySelectorAll('.tab');
+  var frames = { a: document.getElementById('frame-a'), b: document.getElementById('frame-b') };
+  var popout = document.getElementById('popout');
+  var urls = {
+    a: 'https://pick12038.github.io/suqin/',
+    b: 'https://pick12038.github.io/chaoneng-leave/'
+  };
+  var current = 'a';
+
+  function show(v){
+    current = v;
+    tabs.forEach(function(t){ t.classList.toggle('active', t.dataset.view === v); });
+    frames.a.classList.toggle('show', v === 'a');
+    frames.b.classList.toggle('show', v === 'b');
+    popout.href = urls[v];
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.dataset.view); }); });
+  show('a');
+})();
+</script>
+</body>
+</html>
